@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helin Tecim — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F5EBE0;
+            --cream-dark: #EDD9C5;
+            --bordo: #800020;
+            --bordo-dark: #5C0016;
+            --bordo-light: #9E1030;
+            --text-dark: #1A1008;
+            --text-mid: #5C3D2E;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--cream);
+            color: var(--text-dark);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.5;
+        }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1.6rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            mix-blend-mode: multiply;
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--bordo);
+            text-decoration: none;
+        }
+
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-mid);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--bordo); }
+
+        #hero {
+            min-height: 100vh;
+            padding: 0 5vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--bordo);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s 2.8s forwards;
+        }
+
+        .hero-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(5rem, 14vw, 13rem);
+            font-weight: 700;
+            font-style: italic;
+            line-height: 0.88;
+            color: var(--bordo);
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeUp 1s 3.0s forwards;
+        }
+
+        .hero-name span {
+            display: block;
+            font-style: normal;
+            font-weight: 300;
+            font-size: clamp(3rem, 8vw, 7.5rem);
+            color: var(--text-mid);
+            letter-spacing: 0.05em;
+        }
+
+        .hero-meta {
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s 3.4s forwards;
+        }
+
+        .hero-role {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1rem, 2.2vw, 1.6rem);
+            font-style: italic;
+            color: var(--text-mid);
+            letter-spacing: 0.04em;
+        }
+
+        .hero-contact {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            color: var(--bordo);
+            text-transform: uppercase;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 2.5rem;
+            right: 5vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 1s 3.9s forwards;
+        }
+
+        .hero-scroll span {
+            font-size: 0.6rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--text-mid);
+            writing-mode: vertical-rl;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: var(--bordo);
+            animation: growLine 1.5s 4.1s ease forwards;
+            transform-origin: top;
+            transform: scaleY(0);
+        }
+
+        .hero-deco {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(7rem, 18vw, 20rem);
+            font-weight: 700;
+            color: var(--bordo);
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+            animation: portfolioIntro 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes portfolioIntro {
+            0% { opacity: 0; transform: translate(-50%, -44%) scale(1.08); }
+            30% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            70% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0.08; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        section { padding: 7rem 5vw; }
+        .section-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--bordo);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            max-width: 60px;
+            height: 1px;
+            background: var(--bordo);
+            opacity: 0.4;
+        }
+        .section-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.4rem, 5vw, 4.5rem);
+            font-weight: 700;
+            font-style: italic;
+            line-height: 1.1;
+            color: var(--bordo-dark);
+            margin-bottom: 2.5rem;
+        }
+
+        #biography {
+            background: var(--bordo);
+            color: var(--cream);
+            padding: 7rem 8vw;
+            position: relative;
+            overflow: hidden;
+        }
+        #biography .section-label { color: var(--cream-dark); opacity: 0.7; }
+        #biography .section-label::after { background: var(--cream); }
+        #biography .section-heading { color: var(--cream); }
+        .bio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        .bio-text p { font-size: 0.92rem; line-height: 1.9; color: rgba(245, 235, 224, 0.85); margin-bottom: 1.2rem; }
+        .bio-facts { display: flex; flex-direction: column; gap: 2rem; }
+        .bio-fact-item { border-left: 2px solid rgba(245, 235, 224, 0.25); padding-left: 1.5rem; }
+        .bio-fact-label { font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(245, 235, 224, 0.5); }
+        .bio-fact-value { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; color: var(--cream); }
+
+        #experience { background: var(--cream); }
+        .exp-item {
+            border-top: 1px solid rgba(128,0,32,0.15);
+            padding: 2.5rem 0;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 3rem;
+        }
+        .exp-period { font-size: 0.62rem; font-weight: 600; text-transform: uppercase; color: var(--bordo); }
+        .exp-company { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; color: var(--bordo-dark); }
+        .exp-role { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1rem; }
+        .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+        .exp-bullets li { font-size: 0.8rem; line-height: 1.75; color: var(--text-mid); padding-left: 1.2rem; position: relative; }
+        .exp-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--bordo); opacity: 0.5; }
+
+        #skills { background: var(--cream); }
+        .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .skill-card { border: 1px solid rgba(128, 0, 32, 0.15); padding: 2.5rem 2rem; background: rgba(255,255,255,0.4); backdrop-filter: blur(4px); transition: 0.3s; }
+        .skill-card:hover { border-color: var(--bordo); transform: translateY(-4px); }
+        .skill-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; color: var(--bordo-dark); }
+        .tag { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; padding: 0.3rem 0.8rem; border: 1px solid rgba(128, 0, 32, 0.35); color: var(--bordo); margin-right: 4px; display: inline-block; margin-top: 5px; }
+
+        #work { background: var(--cream-dark); }
+        .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(128,0,32,0.12); }
+        .project-card { background: var(--cream-dark); padding: 2.8rem 2.5rem; transition: 0.4s; min-height: 240px; display: flex; flex-direction: column; justify-content: space-between; }
+        .project-card:hover { background: var(--bordo); color: var(--cream); }
+        .project-card:hover * { color: var(--cream) !important; }
+        .project-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-style: italic; font-weight: 700; }
+        .project-card.wide { grid-column: span 2; }
+
+        #connect { background: var(--bordo-dark); text-align: center; color: var(--cream); padding: 8rem 5vw; }
+        .connect-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(4rem, 11vw, 10rem); font-style: italic; }
+        .connect-link { color: var(--cream); text-decoration: none; border: 1px solid rgba(245,235,224,0.3); padding: 1rem 2rem; display: inline-block; margin: 10px; transition: 0.3s; }
+        .connect-link:hover { background: var(--cream); color: var(--bordo-dark); }
+
+        footer { background: var(--bordo-dark); padding: 2rem 5vw; color: rgba(245,235,224,0.3); font-size: 0.7rem; display: flex; justify-content: space-between; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 900px) {
+            .bio-grid, .skills-grid, .portfolio-grid, .exp-item { grid-template-columns: 1fr; }
+            .project-card.wide { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#hero" class="nav-logo">H.T</a>
+    <ul class="nav-links">
+        <li><a href="#biography">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#connect">Contact</a></li>
+    </ul>
+</nav>
+
+<section id="hero">
+    <div class="hero-eyebrow">Portfolio — 2026</div>
+    <h1 class="hero-name">HELİN<span>TECİM</span></h1>
+    <div class="hero-meta">
+        <p class="hero-role">New Media & Communication Student</p>
+        <p class="hero-contact">+90 553 253 69 08 · Hln.tecim@gmail.com</p>
+    </div>
+    <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+    <div class="hero-deco">portfolio</div>
+</section>
+
+<section id="biography">
+    <div class="section-label reveal">Biography</div>
+    <h2 class="section-heading reveal">The Story So Far</h2>
+    <div class="bio-grid">
+        <div class="bio-text reveal">
+            <p>I'm Helin Tecim, a senior New Media and Communication student at Yaşar University[cite: 4, 209]. My journey is where storytelling meets technology, focusing on digital marketing, social media, and web development[cite: 5, 214].</p>
+            <p>At Hid Works agency, I bridge the gap between design and code, rebuilding corporate identities and creating custom digital planning tools[cite: 214, 332].</p>
+        </div>
+        <div class="bio-facts reveal">
+            <div class="bio-fact-item"><div class="bio-fact-label">Education</div><div class="bio-fact-value">Yaşar University</div></div>
+            <div class="bio-fact-item"><div class="bio-fact-label">Location</div><div class="bio-fact-value">İzmir, Turkey</div></div>
+        </div>
+    </div>
+</section>
+
+<section id="experience">
+    <div class="section-label reveal">Career</div>
+    <h2 class="section-heading reveal">Experience</h2>
+    <div class="exp-list">
+        <div class="exp-item reveal">
+            <div class="exp-meta"><div class="exp-period">Feb 2026 — Ongoing</div><div class="exp-company">Hid Works</div></div>
+            <div class="exp-content">
+                <div class="exp-role">Digital Strategy & Web Dev Intern</div>
+                <ul class="exp-bullets">
+                    <li>Rebuilt the official website (hidworks.net) using custom HTML5/CSS3 on WordPress[cite: 216, 300].</li>
+                    <li>Developed a Google Firestore-based "Content Planning Panel" from scratch[cite: 331, 343].</li>
+                    <li>Technical SEO and performance optimization via Google Search Console[cite: 327, 328].</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="skills">
+    <div class="section-label reveal">Expertise</div>
+    <h2 class="section-heading reveal">Skills</h2>
+    <div class="skills-grid">
+        <div class="skill-card reveal">
+            <span class="skill-icon">🤖</span><div class="skill-title">AI Prompt Engineering</div>
+            <p class="skill-desc">Generative AI workflows and high-fidelity asset production[cite: 14, 222].</p>
+        </div>
+        <div class="skill-card reveal">
+            <span class="skill-icon">⚡</span><div class="skill-title">Web Development</div>
+            <p class="skill-desc">HTML5, CSS3, WordPress and cloud database integration[cite: 216, 343].</p>
+        </div>
+        <div class="skill-card reveal">
+            <span class="skill-icon">✦</span><div class="skill-title">Creative Content</div>
+            <p class="skill-desc">Editorial design, videography, and strategic social media management[cite: 11, 12].</p>
+        </div>
+    </div>
+</section>
+
+<section id="work">
+    <div class="section-label reveal">Projects</div>
+    <h2 class="section-heading reveal">My Work</h2>
+    <div class="portfolio-grid">
+        <div class="project-card reveal"><div><div class="project-num">01</div><div class="project-title">Content Panel</div><p class="project-desc">A custom Firestore dashboard for agency-client revision workflows[cite: 332, 349].</p></div></div>
+        <div class="project-card reveal"><div><div class="project-num">02</div><div class="project-title">Tales of Fuego</div><p class="project-desc">Premium editorial landing page and digital storytelling concept[cite: 357, 361].</p></div></div>
+        <div class="project-card reveal"><div><div class="project-num">03</div><div class="project-title">Sağlığın Kalkanı</div><p class="project-desc">Public health awareness campaign and custom web demo[cite: 158, 161].</p></div></div>
+        <div class="project-card wide reveal"><div><div class="project-num">04</div><div class="project-title">Social Media Campaigns</div><p class="project-desc">Content planning for Marmara Halı, Efe Tur, and Hibro[cite: 92, 192].</p></div></div>
+    </div>
+</section>
+
+<section id="connect">
+    <p class="connect-eyebrow reveal">Available for collaboration</p>
+    <h2 class="connect-heading reveal">Let's Connect</h2>
+    <div class="connect-links reveal">
+        <a class="connect-link" href="mailto:Hln.tecim@gmail.com">Email</a>
+        <a class="connect-link" href="https://linkedin.com">LinkedIn</a>
+    </div>
+</section>
+
+<footer><p>© 2026 Helin Tecim</p><p>İzmir, Turkey</p></footer>
+
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
